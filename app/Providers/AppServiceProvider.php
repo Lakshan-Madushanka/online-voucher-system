@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repository\Auth\SanctumAuthRepository;
+use App\Repository\SanctumAuthRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(SanctumAuthRepositoryInterface::class, function () {
+            return new SanctumAuthRepository();
+        });
     }
 
     /**
@@ -23,6 +28,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Password::defaults(function () {
+            $rule = Password::min(6)
+                ->letters()
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised();
+
+            return $this->app->isProduction() ? $rule : Password::min(4);
+        });
     }
 }
