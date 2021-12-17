@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Voucher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VoucherFactory extends Factory
@@ -17,7 +18,12 @@ class VoucherFactory extends Factory
             'image' => $this->faker->imageUrl(),
             'price' => $this->faker->randomFloat(2, 1000, 200000),
             'terms' => $this->faker->text(200),
-            'validity' => now()->subMonth(6),
+            'validity' => $this->faker->randomElement([
+                now()->addMonth(6),
+                now()->addYear(1),
+                now()->addYears(2),
+            ]),
+            'status' => $this->faker->randomElement(Voucher::STATUS),
         ];
     }
 }

@@ -18,15 +18,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(3)->create()->each(function ($user, $key) {
-            $user->roles()->attach(array_values(Role::types)[$key]);
+        $roleValues = array_values(Role::types);
+
+        User::factory()->count(3)->create()->each(function ($user, $key) use ($roleValues){
+            $user->roles()->attach($roleValues[$key]);
         });
 
         User::factory()->count(10)
-            ->hasRoles(1)
+            //->hasRoles(1)
             ->has(Voucher::factory()->count(3))
             ->hascashVouchers(2)
-            ->create();
+            ->create()
+            ->each(function ($user, $key) use($roleValues)  {
+                //echo $key , PHP_EOL;
+                $index = floor($key/3);
+                    if($index == 3) {
+                        $index = 2;
+                    }
+                $user->roles()->attach($roleValues[$index]);
+            });;
 
         $purchases = Purchase::all()->each(function($purchase) {
             $purchaseDetail = PurchaseDetail::factory()->make();

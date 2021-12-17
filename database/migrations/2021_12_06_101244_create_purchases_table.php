@@ -19,15 +19,18 @@ class CreatePurchasesTable extends Migration
 
             $table->foreignId('user_id')
                 ->constrained()
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreignId('voucher_id')
                 ->nullable()
                 ->constrained()
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreignId('cash_voucher_id')
                 ->nullable()
                 ->constrained()
-                ->onUpdate('cascade');
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

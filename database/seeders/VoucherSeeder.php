@@ -14,6 +14,6 @@ class VoucherSeeder extends Seeder
      */
     public function run()
     {
-        Voucher::factory(2)->create();
+        Voucher::factory(10)->create();
     }
 }

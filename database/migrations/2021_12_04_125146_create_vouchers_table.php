@@ -16,9 +16,11 @@ class CreateVouchersTable extends Migration
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
             $table->string('image', 100);
-            $table->decimal('price', 8, 2);
+            $table->decimal('price', 8, 2)->index('idx_price');
             $table->string('terms', 1000);
-            $table->timestamp('validity');
+            $table->enum('status', ['approved', 'rejected', 'pending'])
+                ->index('idx_status');
+            $table->timestamp('validity')->index('idx_validity');;
             $table->timestamps();
         });
     }

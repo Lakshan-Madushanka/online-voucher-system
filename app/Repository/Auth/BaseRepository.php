@@ -17,7 +17,10 @@ class BaseRepository implements AuthRepositoryInterface
 
     public function register(array $user)
     {
+        abort_if(Auth::check(), 401,'Authenticated' );
+
         $user['password'] = Hash::make($user['password']);
+
         return User::create($user);
     }
 

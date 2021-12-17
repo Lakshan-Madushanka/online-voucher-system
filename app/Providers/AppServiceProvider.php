@@ -16,9 +16,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(SanctumAuthRepositoryInterface::class, function () {
+      /*  $this->app->bind(SanctumAuthRepositoryInterface::class, function () {
             return new SanctumAuthRepository();
-        });
+        });*/
     }
 
     /**

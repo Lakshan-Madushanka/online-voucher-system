@@ -126,6 +126,10 @@ return [
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
+    // additional messages
+    'isDirty' => 'At least one attribute must be changed',
+    'voucherValidity' => 'The validity period must be 6 months, 1 year or 2 year from added date.',
+    'fileExists' => 'File with same name already exsists please choose a different name',
 
     /*
     |--------------------------------------------------------------------------

@@ -50,8 +50,21 @@ Route::get('/password/reset-redirect',
 Route::post('/password/reset',
     'Auth\SanctumSPAAuthController@resetPassword')
     ->name('reset.password');
+// end auth routes
 
 
+//voucher routes
+Route::name('api.')->group(function () {
+    Route::delete('vouchers/delete-many', 'Voucher\VoucherController@destroyMany')
+        ->name('vouchers.delete_many');
+    Route::apiResource('vouchers', 'Voucher\VoucherController');
+    Route::get('vouchers/status/search',
+        'Voucher\VoucherController@searchStatus')
+        ->name('vouchers.search.status');
+    Route::get('vouchers/price-range/search',
+        'Voucher\VoucherController@searchPriceRange')
+        ->name('vouchers.search.price_range');
+});
 
 
 

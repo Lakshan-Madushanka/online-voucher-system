@@ -22,8 +22,8 @@ class CreatePurchaseDetailsTable extends Migration
 
             $table->foreignId('purchase_id')
                 ->constrained()
-                ->onUpdate('cascade');
-
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
