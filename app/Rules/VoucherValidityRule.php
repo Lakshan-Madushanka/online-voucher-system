@@ -38,7 +38,7 @@ class VoucherValidityRule implements Rule
         $voucher = Route::current()->parameter('voucher');
 
         if ($voucher) {
-            if(empty($value)) {
+            if($voucher->isDirty($attribute)) {
                 return true;
             }
             return $this->updateValidate($voucher, $value);

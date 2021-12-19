@@ -190,12 +190,12 @@ class CashVoucherTest extends TestCase
 
     public function getVoucher()
     {
-        return Voucher::inRandomOrder()->first();
+        return CashVoucher::inRandomOrder()->first();
     }
 
     public function getVouchers(int $noOfVouchers)
     {
-        $vouchers = Voucher::inRandomOrder()->limit($noOfVouchers)->get();
+        $vouchers = CashVoucher::inRandomOrder()->limit($noOfVouchers)->get();
 
         return $vouchers;
     }
