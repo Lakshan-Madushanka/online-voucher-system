@@ -52,53 +52,6 @@ class User extends Authenticatable
 
     }
 
-    public function checkRole(string $role)
-    {
-        if(!Auth::check()) {
-            return false;
-        }
-
-        $authUser = Auth::user();
-        $roles = self::getRoles($authUser);
-
-        switch ($role) {
-            case 'isAdministrative' :
-                return in_array(Role::types['admin'], $roles)
-                    || in_array(Role::types['super_admin'], $roles);
-                break;
-            case 'isSuperAdmin' :
-                return in_array(Role::types['super_admin'], $roles);
-                break;
-            case 'isAdmin' :
-                return in_array(Role::types['admin'], $roles);
-                break;
-
-        }
-    }
-
-    public static function isAdministrative(User $user)
-    {
-        $roles = self::getRoles($user);
-
-        return in_array(Role::types['admin'], $roles)
-            || in_array(Role::types['super_admin'], $roles);
-    }
-
-    public static function isSuperAdmin(User $user)
-    {
-        $roles = self::getRoles();
-
-        return in_array(Role::types['super_admin'], $roles);
-    }
-
-    public static function isAdmin(User $user)
-    {
-        $roles = self::getRoles();
-
-        return in_array(Role::types['admin'], $roles);
-    }
-
-
     //relationships
     public function roles()
     {

@@ -47,4 +47,14 @@ class BaseRepository implements EloquentRepositoryInterface
     {
        return  $this->model->toBase()->get($columns);
     }
+
+    public function delete(Model $model): bool
+    {
+        return $model->delete();
+    }
+
+    public function deleteMany(array $ids): int
+    {
+        return $this->model->destroy($ids);
+    }
 }

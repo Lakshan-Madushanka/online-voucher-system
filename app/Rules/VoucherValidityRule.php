@@ -29,6 +29,12 @@ class VoucherValidityRule implements Rule
      */
     public function passes($attribute, $value)
     {
+        $date = date_parse($value);
+
+        if(!checkdate($date['month'], $date['day'], $date['year'])) {
+            return false;
+        }
+
         $voucher = Route::current()->parameter('voucher');
 
         if ($voucher) {

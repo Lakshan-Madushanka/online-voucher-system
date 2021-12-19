@@ -3,19 +3,18 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class DeleteExistingFile implements Rule
+class CashVoucherPriceRule implements Rule
 {
-    private $model;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(Model $model)
+    public function __construct()
     {
-        $this->model = $model;
+        //
     }
 
     /**
@@ -27,7 +26,10 @@ class DeleteExistingFile implements Rule
      */
     public function passes($attribute, $value)
     {
-
+        if(!is_int($value)) {
+            return false;
+        }
+        return $value%500 === 0 and $value !== 0;
     }
 
     /**
@@ -37,6 +39,6 @@ class DeleteExistingFile implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return __('validation.cashVoucherPrice');
     }
 }

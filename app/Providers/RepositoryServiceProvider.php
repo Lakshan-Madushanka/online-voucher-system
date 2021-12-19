@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\CashVoucher;
 use App\Models\Voucher;
 use App\Repository\Auth\SanctumAuthRepository;
+use App\Repository\CashVoucherRepositoryInterface;
+use App\Repository\Eloquent\CashVoucherRepository;
 use App\Repository\Eloquent\VoucherRepository;
 use App\Repository\SanctumAuthRepositoryInterface;
 use App\Repository\VoucherRepositoryInterface;
@@ -18,7 +21,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-           }
+
+    }
 
     /**
      * Bootstrap services.
@@ -33,6 +37,10 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind(VoucherRepositoryInterface::class, function () {
             return new VoucherRepository(new Voucher());
+        });
+
+        $this->app->bind(CashVoucherRepositoryInterface::class, function () {
+            return new CashVoucherRepository(new CashVoucher());
         });
 
     }

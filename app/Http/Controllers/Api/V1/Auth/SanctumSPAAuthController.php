@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserLoginRequest;
-use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\User\UserLoginRequest;
+use App\Http\Requests\User\UserStoreRequest;
 use App\Models\Role;
 use App\Repository\SanctumAuthRepositoryInterface;
 use Illuminate\Http\Request;

@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('isAdministrative', function (User $user) {
             return UserService::checkRole('isAdministrative') ? Response::allow()
-                : Response::deny('Admin type access required ');
+                : Response::deny(__('validation.adminTypeRequired'));
         });
     }
 }

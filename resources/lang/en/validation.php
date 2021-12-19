@@ -130,6 +130,8 @@ return [
     'isDirty' => 'At least one attribute must be changed',
     'voucherValidity' => 'The validity period must be 6 months, 1 year or 2 year from added date.',
     'fileExists' => 'File with same name already exsists please choose a different name',
+    'cashVoucherPrice' => 'Cash Voucher price must be multification of 500',
+    'adminTypeRequired' => 'Admin type access required.',
 
     /*
     |--------------------------------------------------------------------------

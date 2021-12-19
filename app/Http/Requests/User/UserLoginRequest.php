@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 
-class UserStoreRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +26,9 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'     => ['required', 'alpha_dash', 'between:3,10'],
-            'email'    => ['required','email', 'unique:users,email'],
+            'email' => ['required', 'email'],
             'password' => ['required', Password::defaults()],
             'rememberMe' => ['bool']
-
         ];
     }
 }

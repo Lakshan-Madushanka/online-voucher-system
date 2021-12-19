@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Voucher;
 
 use App\Rules\UploadedFileNameLength;
 use App\Rules\VoucherValidityRule;

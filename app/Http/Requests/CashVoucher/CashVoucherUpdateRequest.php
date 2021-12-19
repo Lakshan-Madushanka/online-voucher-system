@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\CashVoucher;
 
+use App\Rules\CashVoucherPriceRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
-class UserLoginRequest extends FormRequest
+class CashVoucherUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -15,7 +15,7 @@ class UserLoginRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::check();
+        return false;
     }
 
     /**
@@ -26,9 +26,12 @@ class UserLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => ['required', 'email'],
-            'password' => ['required', Password::defaults()],
-            'rememberMe' => ['bool']
+            'price' => [
+                'required',
+                'integer',
+                new CashVoucherPriceRule(),
+                Rule::unique('cash_vouchers')
+            ],
         ];
     }
 }

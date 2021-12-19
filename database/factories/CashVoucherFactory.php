@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CashVoucherFactory extends Factory
 {
+    private $value = 0;
     /**
      * Define the model's default state.
      *
@@ -13,8 +14,10 @@ class CashVoucherFactory extends Factory
      */
     public function definition()
     {
+        $this->value += 500;
+
         return [
-            'value' => $this->faker->randomFloat(2, 1000, 200000),
+            'price' => $this->value,
         ];
     }
 }

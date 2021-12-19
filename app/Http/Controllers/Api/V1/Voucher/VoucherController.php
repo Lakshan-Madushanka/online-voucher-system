@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\V1\Voucher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DeleteManyByIdRequest;
 use App\Http\Requests\SearchPriceRangeRequest;
 use App\Http\Requests\SearchStatusRequest;
-use App\Http\Requests\VoucherStoreRequest;
-use App\Http\Requests\VoucherUpdateRequest;
+use App\Http\Requests\Voucher\VoucherStoreRequest;
+use App\Http\Requests\Voucher\VoucherUpdateRequest;
 use App\Models\Voucher;
 use App\Repository\VoucherRepositoryInterface;
 use App\Services\FileService;
@@ -145,27 +146,13 @@ class VoucherController extends Controller
      */
     public function destroy(Voucher $voucher)
     {
-        $response = Gate::inspect('isAdministrative');
-        abort_if(!$response->allowed(), 403, $response->message());
-
-        $voucher->delete();
-
-        return $this->showMessage([], Response::HTTP_OK,
-            Response::$statusTexts[Response::HTTP_OK]);
+        return $this->deleteById($voucher, $this->voucherRepo);
 
     }
 
-    public function destroyMany(Request $request)
+    public function destroyMany(DeleteManyByIdRequest $request)
     {
-        $response = Gate::inspect('isAdministrative');
-        abort_if(!$response->allowed(), 403, $response->message());
-
-        $ids = $request->validate(['ids' => ['required', 'array']]);
-
-        Voucher::destroy($ids);
-
-        return $this->showMessage([], Response::HTTP_OK,
-            Response::$statusTexts[Response::HTTP_OK]);
+       return $this->deleteMany($request, $this->voucherRepo);
     }
 
     public function searchStatus(SearchStatusRequest $request)
@@ -191,7 +178,6 @@ class VoucherController extends Controller
             $inputs['max']);
 
         return $this->showMany($results);
-
     }
 
 }

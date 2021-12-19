@@ -26,7 +26,7 @@ class UploadedFileNameLength implements Rule
      */
     public function passes($attribute, $value)
     {
-        $uploadedFleLength = 0;
+        $uploadedFleLength = -1;
 
         if (request()->hasFile($attribute)) {
             $uploadedFile = request()->file($attribute);

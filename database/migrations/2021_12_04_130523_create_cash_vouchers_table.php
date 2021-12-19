@@ -15,7 +15,7 @@ class CreateCashVouchersTable extends Migration
     {
         Schema::create('cash_vouchers', function (Blueprint $table) {
             $table->id();
-            $table->decimal('value', 8, 2);
+            $table->integer('price')->unique();
             $table->timestamps();
         });
     }

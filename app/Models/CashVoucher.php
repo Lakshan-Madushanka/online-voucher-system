@@ -9,6 +9,10 @@ class CashVoucher extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'price'
+    ];
+
     public function owner()
     {
         return $this->belongsToMany(User::class, 'purchases')

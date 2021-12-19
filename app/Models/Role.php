@@ -9,12 +9,21 @@ class Role extends Model
 {
     use HasFactory;
 
+    const SUPER_ADMIN = 'super_admin';
+    const ADMIN = 'admin';
+    const CUSTOMER = 'customer';
+
     const types
         = [
-            'super_admin' => 1,
-            'admin'       => 2,
-            'customer'    => 3,
+            self::SUPER_ADMIN => 1,
+            self::ADMIN       => 2,
+            self::CUSTOMER    => 3,
         ];
+
+    public static function getRoleName()
+    {
+        $names = array_keys(self::types);
+    }
 
     public function users()
     {

@@ -36,7 +36,6 @@ class UploadedFileNameExists implements Rule
     {
         $isFileExists = false;
 
-
         if (request()->hasFile($attribute)) {
             $uploadedFile = request()->file($attribute);
 
