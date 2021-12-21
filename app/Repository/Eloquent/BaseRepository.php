@@ -57,4 +57,26 @@ class BaseRepository implements EloquentRepositoryInterface
     {
         return $this->model->destroy($ids);
     }
+
+    public function findWithoutFail(
+        $key,
+        array $columns = ['*'],
+        array $relations = []
+    ): ?Model
+    {
+        $model = $this->model->select($columns)->with($relations)
+            ->find($key);
+
+        return $model;
+    }
+
+    public function attach($ownerId, string $relationshipName, array $relationsIds)
+    {
+        $this->find($ownerId)->{$relationshipName}()->attach($relationsIds);
+    }
+
+    public function getOldestRecord(array $columns = ['*'])
+    {
+        return $this->model->select($columns)->orderBy('id', 'desc')->first();
+    }
 }

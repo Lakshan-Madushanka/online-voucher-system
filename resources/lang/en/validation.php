@@ -132,6 +132,7 @@ return [
     'fileExists' => 'File with same name already exsists please choose a different name',
     'cashVoucherPrice' => 'Cash Voucher price must be multification of 500',
     'adminTypeRequired' => 'Admin type access required.',
+    'voucherRequiredWithout' => 'At least one purchase required.',
 
     /*
     |--------------------------------------------------------------------------

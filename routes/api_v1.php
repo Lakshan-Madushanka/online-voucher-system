@@ -56,7 +56,8 @@ Route::post('/password/reset',
 Route::name('api.')->group(function () {
 
     //voucher routes
-    Route::delete('vouchers/delete-many', 'Voucher\VoucherController@destroyMany')
+    Route::delete('vouchers/delete-many',
+        'Voucher\VoucherController@destroyMany')
         ->name('vouchers.delete_many');
     Route::apiResource('vouchers', 'Voucher\VoucherController');
     Route::get('vouchers/status/search',
@@ -68,12 +69,17 @@ Route::name('api.')->group(function () {
     // end voucher routes
 
     //cash vouchers
-    Route::delete('cash-vouchers/delete-many', 'CashVoucher\CashVoucherController@destroyMany')
+    Route::delete('cash-vouchers/delete-many',
+        'CashVoucher\CashVoucherController@destroyMany')
         ->name('cash-vouchers.delete_many');
     Route::apiResource('cash-vouchers', 'CashVoucher\CashVoucherController');
     Route::get('cash-vouchers/price-range/search',
         'CashVoucher\CashVoucherController@searchPriceRange')
         ->name('cash-vouchers.search.price_range');
+
+    //purchase controller
+    Route::apiResource('vouchers-purchases',
+        'VoucherPurchase\PurchaseController')->only(['store']);
 
 });
 

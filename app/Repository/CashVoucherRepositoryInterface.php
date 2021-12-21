@@ -4,7 +4,7 @@
 namespace App\Repository;
 
 
-interface CashVoucherRepositoryInterface
+interface CashVoucherRepositoryInterface extends EloquentRepositoryInterface
 {
 
 }

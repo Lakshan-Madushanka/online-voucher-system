@@ -14,6 +14,12 @@ class PurchaseDetail extends Model
         'presented'
     ];
 
+    protected $fillable = [
+        'quantity',
+        'type',
+        'receiver_id',
+        'purchase_id'
+    ];
     public function voucher()
     {
         return $this->belongsTo(Purchase::class);

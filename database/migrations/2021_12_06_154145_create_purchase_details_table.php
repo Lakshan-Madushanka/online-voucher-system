@@ -17,7 +17,7 @@ class CreatePurchaseDetailsTable extends Migration
             $table->id();
             $table->tinyInteger('quantity', false, true);
             $table->enum('type', ['direct', 'presented']);
-            $table->unsignedBigInteger('receiver_id');
+            $table->unsignedBigInteger('receiver_id')->nullable();
             $table->timestamps();
 
             $table->foreignId('purchase_id')

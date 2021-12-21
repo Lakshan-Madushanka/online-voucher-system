@@ -21,6 +21,12 @@ interface EloquentRepositoryInterface
         array $relations = []
     ): ?Model;
 
+    public function findWithoutFail(
+        $key,
+        array $columns = ['*'],
+        array $relations = []
+    ): ?Model;
+
     public function create(array $data): Model;
 
     public function update(Model $model): Model;
@@ -28,4 +34,8 @@ interface EloquentRepositoryInterface
     public function delete(Model $model): bool;
 
     public function deleteMany(array $ids): int;
+
+    public function attach($ownerId, string $relationshipName, array $relationsIds);
+
+    public function getOldestRecord(array $columns);
 }
