@@ -79,7 +79,11 @@ Route::name('api.')->group(function () {
 
     //purchase controller
     Route::apiResource('vouchers-purchases',
-        'VoucherPurchase\PurchaseController')->only(['store']);
+        'Purchase\VoucherPurchaseController')->only(['store']);
+
+    //user routes
+    Route::apiResource('users.regular-voucher', 'User\UserRegularVoucherController')->only(['index']);
+    Route::apiResource('users.cash-voucher', 'User\UserCashVoucherController')->only(['index']);
 
 });
 

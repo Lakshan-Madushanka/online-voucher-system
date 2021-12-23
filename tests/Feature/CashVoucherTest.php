@@ -170,6 +170,8 @@ class CashVoucherTest extends TestCase
     {
         $user = User::whereRelation('roles', 'type', $type)->first();
 
+       // $response = $this->json('get', route())
+
         return $user;
     }
 

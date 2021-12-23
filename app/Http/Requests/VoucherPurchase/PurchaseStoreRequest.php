@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\VoucherPurchase;
 
+use App\Models\Voucher;
 use App\Repository\CashVoucherRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use App\Repository\VoucherRepositoryInterface;
@@ -45,8 +46,8 @@ class PurchaseStoreRequest extends FormRequest
             ],
             'regularVouchers.*.voucher_Id'  => [
                 'required', 'integer', function ($attribute, $value, $fail) {
-                    $voucher = $this->voucherRepo->findWithoutFail($value);
-                    if (!$voucher) {
+                    $voucher = $this->voucherRepo->findWithoutFail($value, ['status']);
+                    if ($voucher['status'] !==  Voucher::STATUS['APPROVED']) {
                         $fail("Invalid $attribute");
                     }
                 },
@@ -54,7 +55,7 @@ class PurchaseStoreRequest extends FormRequest
             'regularVouchers.*.user_Id'     => [
                 'required', 'integer', Rule::in([Auth::id()]),
             ],
-            'regularVouchers.*.quantity'    => ['required', 'integer'],
+            'regularVouchers.*.quantity'    => ['required', 'integer', 'min: 1'],
             'regularVouchers.*.type'        => [
                 'required', Rule::in(['direct', 'presented']),
             ],
@@ -82,7 +83,7 @@ class PurchaseStoreRequest extends FormRequest
             'cashVouchers.*.user_Id'     => [
                 'required', 'integer', Rule::in(Auth::id()),
             ],
-            'cashVouchers.*.quantity'    => ['required', 'integer'],
+            'cashVouchers.*.quantity'    => ['required', 'integer', 'min:1'],
             'cashVouchers.*.type'        => [
                 'required', Rule::in(['direct', 'presented']),
             ],

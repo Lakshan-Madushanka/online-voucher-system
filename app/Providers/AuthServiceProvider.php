@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Models\Voucher;
+use App\Policies\UserPolicy;
 use App\Policies\VoucherPolicy;
 use App\Services\UserService;
 use Illuminate\Auth\Access\Response;
@@ -19,7 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies
         = [
-            Voucher::class => VoucherPolicy::class
+            Voucher::class => VoucherPolicy::class,
+            User::class => UserPolicy::class
         ];
 
     /**

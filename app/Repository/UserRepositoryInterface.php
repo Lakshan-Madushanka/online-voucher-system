@@ -4,7 +4,9 @@
 namespace App\Repository;
 
 
-interface UserRepositoryInterface
+interface UserRepositoryInterface extends EloquentRepositoryInterface
 {
+    public function regularVoucherpurchases($key, array $columns);
+    public function cashVoucherpurchases($key,  array $columns);
 
 }

@@ -61,12 +61,14 @@ class User extends Authenticatable
     public function vouchers()
     {
         return $this->belongsToMany(Voucher::class, 'purchases')
-            ->as('purchases');
+            ->as('purchases')->withTimestamps();
     }
 
     public function cashVouchers()
     {
         return $this->belongsToMany(CashVoucher::class, 'purchases')
-            ->as('purchases');
+            ->as('purchases')->withTimestamps();
     }
+
+
 }

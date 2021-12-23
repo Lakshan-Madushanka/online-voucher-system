@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Repository\Auth\SanctumAuthRepository;
 use App\Repository\SanctumAuthRepositoryInterface;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -38,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
 
             return $this->app->isProduction() ? $rule : Password::min(4);
         });
+
+        JsonResource::withoutWrapping();
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\VoucherPurchase;
+namespace App\Http\Controllers\Api\V1\Purchase;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VoucherPurchase\PurchaseStoreRequest;
@@ -10,7 +10,7 @@ use App\Repository\UserRepositoryInterface;
 use App\Traits\ApiResponser;
 use Illuminate\Support\Facades\DB;
 
-class PurchaseController extends Controller
+class VoucherPurchaseController extends Controller
 {
     use ApiResponser;
 

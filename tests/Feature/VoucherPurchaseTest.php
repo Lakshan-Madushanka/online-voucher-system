@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Voucher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -31,7 +32,7 @@ class VoucherPurchaseTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $payload  = $this->getValidDataFormat($user->id);
+        $payload = $this->getValidDataFormat($user->id);
         $payload2 = $payload;
 
         unset($payload['regularVouchers'][0]['voucher_Id']);
@@ -63,7 +64,7 @@ class VoucherPurchaseTest extends TestCase
 
         //with receiver id equal to auth user id
         $payload['regularVouchers'][1]['receiver_id'] = $user->id;
-        $response2                                    = $this->json('post',
+        $response2 = $this->json('post',
             route('api.vouchers-purchases.store'), $payload);
 
         $response1->assertStatus(422);
@@ -78,7 +79,7 @@ class VoucherPurchaseTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $payload        = $this->getValidDataFormat($user->id);
+        $payload = $this->getValidDataFormat($user->id);
         $cashVoucherPurchases = count($payload['regularVouchers']);
         $regularVoucherPurchases = count($payload['cashVouchers']);
         $totalPurchases = $cashVoucherPurchases + $regularVoucherPurchases;
@@ -93,8 +94,43 @@ class VoucherPurchaseTest extends TestCase
                 ->etc();
         });
         $response->assertJsonPath('data.total_purchases', $totalPurchases);
-        $response->assertJsonPath('data.cash_voucher_purchases', $cashVoucherPurchases);
-        $response->assertJsonPath('data.regular_voucher_purchases', $regularVoucherPurchases);
+        $response->assertJsonPath('data.cash_voucher_purchases',
+            $cashVoucherPurchases);
+        $response->assertJsonPath('data.regular_voucher_purchases',
+            $regularVoucherPurchases);
+
+    }
+
+    public function test__user__can__obtain__all__regular__voucher__purchased__details(
+    )
+    {
+        $user = $this->createUser();
+
+        Sanctum::actingAs($user);
+
+        $payload = $this->getValidRegularVoucherFormat($user->id);
+
+        $response1 = $this->json('post', route('api.vouchers-purchases.store'),
+            $payload);
+
+        $response2 = $this->json('get',
+            route('api.users.regular-voucher.index', ['user' => $user->id]));
+
+        $response1->assertStatus(200);
+        $response2->assertStatus(200);
+        $response2->assertJson(function (AssertableJson $json){
+            $json->hasAll('status', 'status_message', 'data')
+                ->has('data', 3)
+                ->has('data.user', 3)
+                ->has('data.vouchers', 3 )
+                ->has('data.overall_purchases', 2)
+                ->has('data.overall_purchases.brief', 2)
+                ->has('data.overall_purchases.overall', 4)
+                ->etc();
+        });
+
+        $response2->assertJsonPath('data.overall_purchases.overall.total_purchases', 17);
+
 
     }
 
@@ -103,14 +139,14 @@ class VoucherPurchaseTest extends TestCase
         return [
             "regularVouchers" => [
                 [
-                    "voucher_Id" => 3,
+                    "voucher_Id" => $this->getApprovedVoucherId(),
                     "user_Id"    => $authId,
                     "quantity"   => 1,
                     "type"       => "direct",
 
                 ],
                 [
-                    "voucher_Id" => 3,
+                    "voucher_Id" => $this->getApprovedVoucherId(),
                     "user_Id"    => $authId,
                     "quantity"   => 1,
                     "type"       => "direct",
@@ -138,8 +174,53 @@ class VoucherPurchaseTest extends TestCase
         ];
     }
 
+    public function getValidRegularVoucherFormat(int $authId)
+    {
+        $voucherId1 = $this->getApprovedVoucherId();
+        $voucherId2 = $this->getApprovedVoucherId();
+
+        return [
+            "regularVouchers" => [
+                [
+                    "voucher_Id" => $voucherId1,
+                    "user_Id"    => $authId,
+                    "quantity"   => 13,
+                    "type"       => "direct",
+
+                ],
+                [
+                    "voucher_Id" => $voucherId1,
+                    "user_Id"    => $authId,
+                    "quantity"   => 2,
+                    "type"       => "direct",
+
+                ],
+                [
+                    "voucher_Id" => $voucherId2,
+                    "user_Id"    => $authId,
+                    "quantity"   => 2,
+                    "type"       => "direct",
+
+                ],
+            ],
+        ];
+    }
+
     public function getUser()
     {
         return User::first();
+    }
+
+    public function createUser()
+    {
+        return User::factory()->create();
+    }
+
+    public function getApprovedVoucherId()
+    {
+        return  Voucher::select('id')
+            ->where('status', 'approved')
+            ->inRandomOrder()
+            ->value('id');
     }
 }
