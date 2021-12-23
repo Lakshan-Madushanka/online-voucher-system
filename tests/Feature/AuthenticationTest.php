@@ -163,6 +163,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $this->assertNotNull(Auth::user());
+        $this->assertAuthenticated('web');
         $response->assertJsonPath('data.name', $user['name']);
     }
 }

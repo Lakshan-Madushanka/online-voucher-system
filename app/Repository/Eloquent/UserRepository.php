@@ -24,6 +24,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->join('purchase_details as details', 'details.purchase_id', '=',
                 'purchases.id')
             ->where('users.id', $key)
+            ->orderByDesc('purchases.id')
             ->select($columns)
             ->get();
 
@@ -38,6 +39,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->join('purchase_details as details', 'details.purchase_id', '=',
                 'purchases.id')
             ->where('users.id', $key)
+            ->orderByDesc('purchases.id')
             ->select($columns)
             ->get();
 

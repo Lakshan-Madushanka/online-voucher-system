@@ -24,6 +24,8 @@ class CashVoucherController extends Controller
 
     public function __construct(CashVoucherRepositoryInterface $cashVoucherRepo)
     {
+        $this->middleware('auth:sanctum')->except(['show', 'index']);
+
         $this->cashVoucherRepo = $cashVoucherRepo;
     }
 
