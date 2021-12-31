@@ -99,7 +99,7 @@ class AuthenticationTest extends TestCase
     {
         Sanctum::actingAs(User::factory()->create());
         $response = $this->actingAs(User::factory()->create())
-            ->json('post', route('api.spa_logout'));
+            ->json('get', route('api.spa_logout'));
 
         $this->assertNull(Auth::guard('web')->user());
     }

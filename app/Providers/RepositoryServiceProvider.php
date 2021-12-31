@@ -7,6 +7,8 @@ use App\Models\Purchase;
 use App\Models\PurchaseDetail;
 use App\Models\User;
 use App\Models\Voucher;
+use App\Repository\ApiAuthRepositoryInterface;
+use App\Repository\Auth\ApiAuthRepository;
 use App\Repository\Auth\SanctumAuthRepository;
 use App\Repository\CashVoucherRepositoryInterface;
 use App\Repository\Eloquent\CashVoucherRepository;
@@ -19,7 +21,6 @@ use App\Repository\PurchaseRepositoryInterface;
 use App\Repository\SanctumAuthRepositoryInterface;
 use App\Repository\UserRepositoryInterface;
 use App\Repository\VoucherRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -63,6 +64,10 @@ class RepositoryServiceProvider extends ServiceProvider
 
         $this->app->bind(PurchaseDetailRepositoryInterface::class, function () {
             return new PurchaseDetailRepository(new PurchaseDetail());
+        });
+
+        $this->app->bind(ApiAuthRepositoryInterface::class, function () {
+            return new ApiAuthRepository(new User());
         });
 
     }

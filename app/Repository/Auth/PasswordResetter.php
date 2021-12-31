@@ -19,8 +19,7 @@ trait PasswordResetter
     {
         $credentials = $request->validate(['email' => ['required', 'email']]);
 
-
-        $respose = Password::sendResetLink($credentials);
+        $response = Password::sendResetLink($credentials);
 
         return $this->showOne([], Response::HTTP_OK,
             Response::$statusTexts[Response::HTTP_OK],

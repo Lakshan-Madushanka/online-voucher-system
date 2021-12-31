@@ -18,7 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// auth routes//
+// auth routes [web]//
 Route::name('api.')->group(function () {
     Route::post('/register', 'Auth\SanctumSPAAuthController@register')
         ->name('spa_register');
@@ -26,9 +26,15 @@ Route::name('api.')->group(function () {
     Route::post('/spa-login', 'Auth\SanctumSPAAuthController@SPAAuth')
         ->name('spa_login');
 
-    Route::post('/spa-logout', 'Auth\SanctumSPAAuthController@logout')
+    Route::get('/spa-logout', 'Auth\SanctumSPAAuthController@logout')
         ->middleware('auth:sanctum')
         ->name('spa_logout');
+
+    // auth routes [token]//
+    Route::post('login', 'Auth\ApiAuthController@login')->name('login');
+    Route::middleware('auth:sanctum')
+        ->get('logout', 'Auth\ApiAuthController@logout')->name('logout');
+
 });
 
 Route::get('/email/verify/{id}/{hash}',
@@ -82,8 +88,10 @@ Route::name('api.')->group(function () {
         'Purchase\VoucherPurchaseController')->only(['store']);
 
     //user routes
-    Route::apiResource('users.regular-voucher', 'User\UserRegularVoucherController')->only(['index']);
-    Route::apiResource('users.cash-voucher', 'User\UserCashVoucherController')->only(['index']);
+    Route::apiResource('users.regular-voucher',
+        'User\UserRegularVoucherController')->only(['index']);
+    Route::apiResource('users.cash-voucher', 'User\UserCashVoucherController')
+        ->only(['index']);
 
 });
 

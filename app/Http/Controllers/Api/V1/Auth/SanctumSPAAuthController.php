@@ -23,7 +23,7 @@ class SanctumSPAAuthController extends Controller
 
     public function SPAAuth(UserLoginRequest $request)
     {
-        $userInputs     = $request->validated();
+        $userInputs = $request->validated();
         $shouldRemember = $this->shouldRememberUser($userInputs);
         unset($userInputs['rememberMe']);
 
@@ -32,17 +32,16 @@ class SanctumSPAAuthController extends Controller
 
         if ($isAuthenticated) {
             $this->modifyAuthUser($shouldRemember);
-
-            return $this->showOne(Auth::user(), Response::HTTP_CREATED);
+            return $this->showOne(Auth::user(), Response::HTTP_OK);
         } else {
-            return $this->showError([Response::$statusTexts[422] => __('auth.failed')]);
+            return $this->showError(['credentials' => __('auth.failed')], 422);
         }
     }
 
     public function register(UserStoreRequest $request)
     {
-        $userInputs     = $request->validated();
-        $credentals     = $userInputs;
+        $userInputs = $request->validated();
+        $credentals = $userInputs;
         $shouldRemember = $this->shouldRememberUser($userInputs);
         unset($credentals['name']);
         unset($credentals['rememberMe']);

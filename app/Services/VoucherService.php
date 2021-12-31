@@ -93,7 +93,6 @@ class VoucherService
             }
         }
 
-
         $overall = [
             'total_purchases'           => $totalPurchases,
             'last_purchased_at'         => $lastPurchasedAt,
