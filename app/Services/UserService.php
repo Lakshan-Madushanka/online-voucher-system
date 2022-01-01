@@ -12,7 +12,7 @@ class UserService
 {
     public static function getRoles(User $user)
     {
-        return $user->roles->pluck('id')->toArray();
+        return  (clone $user)->roles->pluck('id')->toArray();
     }
 
     public static function checkRole(string $role)

@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//get authenticated user
+
+Route::middleware('auth:sanctum')
+    ->get('/auth-user', "Auth\AuthController@show");
 
 // auth routes [web]//
 Route::name('api.')->group(function () {

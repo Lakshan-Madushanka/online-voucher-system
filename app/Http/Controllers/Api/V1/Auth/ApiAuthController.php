@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Api\V1\Auth;
 
 
+use App\Http\Requests\ApiLoginValidateRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Repository\ApiAuthRepositoryInterface;
 use App\Services\UserService;
@@ -25,12 +26,12 @@ class ApiAuthController
         $this->userService = $userService;
     }
 
-    public function login(UserLoginRequest $request)
+    public function login(ApiLoginValidateRequest $request)
     {
         $inputs = $request->validated();
 
         $authUser = $this->apiAuth->generateToken($inputs['email'],
-            $inputs['password'], $request->device_name);
+            $inputs['password'], $inputs['app_id']);
 
         $user = clone $authUser;
 
