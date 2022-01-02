@@ -36,34 +36,34 @@ class ApiAuthRepository extends BaseRepository
         $token = $this->getTokenDetails($user->id);
         $expireTime = config('sanctum.expiration');
 
-        if (!is_null($expireTime) && $token) {
-            if (!$this->checkTokenExpired($expireTime, $token->created_at)) {
-                echo $expireTime;
-                return $this->prepareResponse($user,$token->token);
-            }else {
-                $this->revokeToken($user, $token->id);
-            }
+        if ($token) {
+            $this->revokeToken($user, $token->id);
         }
         $token = $user->createToken($deviceName)->plainTextToken;
-        return $this->prepareResponse($user, $token);
+
+        $this->insertUserDeviceInformation($token);
+
+        return $this->prepareResponse($user, $token, $expireTime);
     }
 
     public function revokeTokens(User $user)
     {
-        abort_unless(Auth::check(), 401, 'Unauthenticated');
-
         $user->tokens()->delete();
     }
 
     public function revokeToken(User $user, int $tokenId)
     {
-        $user->tokens()->where('id', $tokenId )->delete();
+        $user->tokens()->where([
+            ['id', $tokenId],
+            ['ip_address', request()->ip()],
+            ['browser', request()->userAgent()],
+        ])->delete();
     }
 
     public function getTokenDetails(int $userId)
     {
         return DB::table('personal_access_tokens as t')
-            ->select( 't.created_at', 'tokenable_id', 't.id')
+            ->select('t.created_at', 'tokenable_id', 't.id')
             ->join('users as u', 't.tokenable_id', '=', 'u.id')
             ->where('u.id', $userId)
             ->orderBy('t.id', 'desc')
@@ -76,11 +76,36 @@ class ApiAuthRepository extends BaseRepository
             ->addMinutes($expireTime));
     }
 
-    public function prepareResponse(User $user, string $token)
-    {
-               $user['token'] = $token;
-               return $user;
+    public function prepareResponse(
+        User $user,
+        string $token,
+        ?int $expiresIn = null
+    ) {
+        $expireTimestamp = null;
+        if ($expiresIn) {
+            $expireTimestamp = now()->addMinutes($expiresIn)->valueOf();
+        }
+        $user['token'] = $token;
+        $user['expires_in'] = $expireTimestamp;
+
+        return $user;
     }
 
+    public function insertUserDeviceInformation(string $token)
+    {
+        $tokenID = explode("|", $token)[0];
+        DB::table('personal_access_tokens')
+            ->where('id', (int) $token)
+            ->update([
+                'ip_address' => request()->ip(),
+                'browser'    => request()->userAgent(),
+            ]);
+    }
+
+    public function logout(User $user)
+    {
+        $tokenId = $this->getTokenDetails($user->id)->id;
+        $this->revokeToken($user, $tokenId);
+    }
 
 }

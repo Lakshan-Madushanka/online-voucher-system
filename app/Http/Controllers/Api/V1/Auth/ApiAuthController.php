@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1\Auth;
 
 
 use App\Http\Requests\ApiLoginValidateRequest;
-use App\Http\Requests\User\UserLoginRequest;
 use App\Repository\ApiAuthRepositoryInterface;
 use App\Services\UserService;
 use App\Traits\ApiResponser;
@@ -44,6 +43,13 @@ class ApiAuthController
     }
 
     public function logout(Request $request)
+    {
+        $this->apiAuth->logout($request->user());
+
+        return $this->showOne(null);
+    }
+
+    public function logoutAll(Request $request)
     {
         $this->apiAuth->revokeTokens($request->user());
 

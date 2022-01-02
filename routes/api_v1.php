@@ -33,6 +33,10 @@ Route::name('api.')->group(function () {
 
     // auth routes [token]//
     Route::post('login', 'Auth\ApiAuthController@login')->name('login');
+
+    Route::middleware('auth:sanctum')->get('logout-all-devices', 'Auth\ApiAuthController@logoutAll')
+        ->name('login-all');
+
     Route::middleware('auth:sanctum')
         ->get('logout', 'Auth\ApiAuthController@logout')->name('logout');
 

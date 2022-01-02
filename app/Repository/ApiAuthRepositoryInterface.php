@@ -15,8 +15,16 @@ interface ApiAuthRepositoryInterface extends AuthRepositoryInterface
     ): User;
 
     public function revokeToken(User $user, int $tokenId);
+
     public function revokeTokens(User $user);
+
     public function getTokenDetails(int $userId);
+
     public function checkTokenExpired(int $expireTime, string $createdDate);
-    public function prepareResponse(User $user, string $token);
+
+    public function prepareResponse(
+        User $user,
+        string $token,
+        ?int $expires_in = null
+    );
 }
